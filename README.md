@@ -80,6 +80,10 @@ To deploy this system, follow these detailed steps:
      kubectl get all
      helm status <release_name>
      ```
+
+![image](https://github.com/sivanmarom/signalPet/assets/97241683/19517c33-f30c-4801-9b90-d1ff533bcf07)
+
+
 ![image](https://github.com/sivanmarom/signalPet/assets/97241683/f078247d-9a5a-4143-85fc-514656bbc726)
 
 ## 5. Testing the System
