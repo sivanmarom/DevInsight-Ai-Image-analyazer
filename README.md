@@ -47,6 +47,9 @@ Persistent storage is crucial for ensuring that the images and queue data are pr
 ### Consumer Service:
 - This service polls RabbitMQ for new image IDs, retrieves the images from the persistent storage, analyzes their size and content, and logs whether each image contains a dog or a cat.
 
+### Suggested Improvements:
+- Resource Limits and Requests: Define resources.requests and resources.limits for CPU and memory in each deployment to ensure that the Kubernetes scheduler can make more informed decisions about where to place pods and to prevent any one service from consuming excessive cluster resources.
+- Liveness and Readiness Probes: Add liveness and readiness probes to help Kubernetes understand when your containers are ready to serve traffic and when they need to be restarted.
 
 ## 4. Deployment Steps Using Helm
 To deploy this system, follow these detailed steps:
