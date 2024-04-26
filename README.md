@@ -117,7 +117,9 @@ To validate that each component of the Kubernetes setup functions correctly, fol
 4. **End-to-End Functionality**:
    - Conduct an end-to-end test by uploading an image and then monitoring the consumer logs to ensure the analysis matches expectations. This test checks that each component (web server, RabbitMQ, consumer service) interacts properly and that data flows seamlessly through the system as designed.
 
+![image](https://github.com/sivanmarom/signalPet/assets/97241683/e6837771-a699-48f1-a7e5-4377dfade166)
 
+![image](https://github.com/sivanmarom/signalPet/assets/97241683/16f82769-b326-4961-901a-173505dce070)
 ## 6. Compromises and Limitations
 
 ### Compromises:
