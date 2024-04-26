@@ -80,7 +80,7 @@ To deploy this system, follow these detailed steps:
      kubectl get all
      helm status <release_name>
      ```
-
+![image](https://github.com/sivanmarom/signalPet/assets/97241683/f078247d-9a5a-4143-85fc-514656bbc726)
 
 ## 5. Testing the System
 To validate that each component of the Kubernetes setup functions correctly, follow these detailed testing steps:
