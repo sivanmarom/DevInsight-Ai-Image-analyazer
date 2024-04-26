@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer
+spec:
+  replicas: {{ .Values.consumer.replicaCount }}
+  selector:
+    matchLabels:
+      app: consumer
+  template:
+    metadata:
+      labels:
+        app: consumer
+    spec:
+      containers:
+      - name: consumer
+        image: {{ .Values.consumer.image }}
+        volumeMounts:
+        - name: image-storage
+          mountPath: /data/images
+      volumes:
+      - name: image-storage
+        persistentVolumeClaim:
+          claimName: web-server-pvc 

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-server
+spec:
+  replicas: {{ .Values.webServer.replicaCount }}
+  selector:
+    matchLabels:
+      app: web-server
+  template:
+    metadata:
+      labels:
+        app: web-server
+    spec:
+      containers:
+      - name: web-server
+        image: {{ .Values.webServer.image }}
+        ports:
+        - containerPort: {{ .Values.webServer.ports.http }}
+        volumeMounts:
+        - name: image-storage
+          mountPath: /data/images
+      volumes:
+      - name: image-storage
+        persistentVolumeClaim:
+          claimName: web-server-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-server
+spec:
+  ports:
+  - port: {{ .Values.webServer.ports.http }}
+    targetPort: {{ .Values.webServer.ports.http }}
+  selector:
+    app: web-server
+  type: NodePort

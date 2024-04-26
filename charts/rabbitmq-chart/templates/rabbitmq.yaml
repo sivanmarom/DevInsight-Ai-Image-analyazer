@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+spec:
+  replicas: {{ .Values.rabbitmq.replicaCount }}
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+      - name: rabbitmq
+        image: {{ .Values.rabbitmq.image }}
+        ports:
+        - containerPort: {{ .Values.rabbitmq.ports.amqp }}
+          name: amqp
+        - containerPort: {{ .Values.rabbitmq.ports.management }}
+          name: management
+        volumeMounts:
+        - name: rabbitmq-data
+          mountPath: {{ .Values.rabbitmq.volumeMounts.rabbitmqData.mountPath }}
+      volumes:  
+      - name: rabbitmq-data
+        persistentVolumeClaim:
+          claimName: rabbitmq-pvc
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+spec:
+  ports:
+  - port: {{ .Values.rabbitmq.ports.amqp }}
+    name: amqp
+  - port: {{ .Values.rabbitmq.ports.management }}
+    name: management
+  selector:
+    app: rabbitmq
+  type: ClusterIP
+

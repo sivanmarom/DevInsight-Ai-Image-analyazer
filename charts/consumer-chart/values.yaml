@@ -1,0 +1,3 @@
+consumer:
+  image: sivanmarom/consumer1:latest
+  replicaCount: 1

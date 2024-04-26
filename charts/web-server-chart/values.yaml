@@ -1,0 +1,5 @@
+webServer:
+  image: sivanmarom/web-server:latest
+  replicaCount: 1
+  ports:
+    http: 5000
