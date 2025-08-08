@@ -24,7 +24,8 @@ flowchart LR
 ```
 
 ### Visual Diagram
-![Architecture Diagram](architecture-diagram.png)
+![WhatsApp Image 2025-08-08 at 11 37 02](https://github.com/user-attachments/assets/0dae0613-59eb-4bc7-8e7b-1ac611352c03)
+
 
 ### Components
 | Service        | Description | Technology Stack |
