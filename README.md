@@ -24,16 +24,15 @@ flowchart LR
 ```
 
 ### Visual Diagram
-![WhatsApp Image 2025-08-08 at 11 37 02](https://github.com/user-attachments/assets/0dae0613-59eb-4bc7-8e7b-1ac611352c03)
-
+![Architecture Diagram](https://github.com/user-attachments/assets/0dae0613-59eb-4bc7-8e7b-1ac611352c03)
 
 ### Components
-| Service        | Description | Technology Stack |
-|----------------|-------------|------------------|
-| Web Server + API | Accepts image uploads, stores them, sends IDs to queue | Python, Flask |
-| Queue Service  | Manages processing requests | RabbitMQ |
-| Consumer Service | Retrieves images, analyzes them, logs results | Python |
-| Persistent Storage | Shared data store for images and queue data | Kubernetes PVC |
+| Service        | Description | Technology Stack | Key Configurations |
+|----------------|-------------|------------------|--------------------|
+| **Web Server + API** | Accepts image uploads, stores them, sends IDs to queue | Python, Flask | Port **5000**, uses shared PVC `/data/images` |
+| **Queue Service**  | Manages processing requests | RabbitMQ | PVC `rabbitmq-pvc` mounted at `/var/lib/rabbitmq`, durability enabled |
+| **Consumer Service** | Retrieves images, analyzes them, logs results | Python | Reads from RabbitMQ, accesses `/data/images` |
+| **Persistent Storage** | Shared data store for images and queue data | Kubernetes PVC | `web-server-pvc` and `rabbitmq-pvc` |
 
 ---
 
@@ -86,22 +85,30 @@ flowchart LR
 ## Testing
 
 ### 1. Upload Image via API
+First, retrieve the external URL:
+```bash
+minikube service web-server --url
+```
+Then upload an image:
 ```bash
 curl -X POST -F 'image=@<path_to_image>' $(minikube service web-server --url)/upload
 ```
-You should receive a success message with a correlation ID.
+Expected result: success message with a correlation ID.
 
 ### 2. Check RabbitMQ Queue
 ```bash
 kubectl port-forward svc/rabbitmq 15672:15672
 ```
-Visit `http://localhost:15672` and confirm the image ID is in the queue.
+Open `http://localhost:15672` and confirm the image ID is in the queue.
 
 ### 3. Monitor Consumer Logs
 ```bash
 kubectl logs deployment/consumer
 ```
-The logs should show image retrieval and classification (dog/cat).
+Expected logs: retrieval of the image and classification result (dog/cat).
+
+### 4. End-to-End Flow
+Upload an image → verify in RabbitMQ → check Consumer logs.
 
 ---
 
@@ -110,6 +117,14 @@ The logs should show image retrieval and classification (dog/cat).
 - Modular Helm charts for each service
 - Isolated microservices for scalability
 - End-to-end testing procedure
+- Separation of concerns between services
+
+---
+
+## Compromises & Limitations
+- **Single Node Cluster**: Using Minikube, not production-grade multi-node.
+- **Limited Scalability**: Not tested under large-scale workloads.
+- **No IaC for infrastructure**: Helm used for apps, but not for cluster creation.
 
 ---
 
@@ -117,8 +132,10 @@ The logs should show image retrieval and classification (dog/cat).
 - **Resource Requests & Limits** for CPU/memory in deployments.
 - **Liveness & Readiness Probes** for better health checks.
 - **Infrastructure as Code** integration with Terraform.
-- Migration from Minikube to **Amazon EKS** for production-grade scaling.
-- CI/CD pipeline for automated deployment.
+- Migration to **Amazon EKS** for production scaling.
+- **CI/CD Pipeline** for automated deployments.
+- **Secrets Management** for RabbitMQ credentials.
+- **Monitoring Stack** (Prometheus + Grafana).
 
 ---
 
@@ -141,7 +158,7 @@ This project strengthened my skills in:
 | Deploy Consumer | `helm install my-consumer ./charts/consumer-chart` | Image processing |
 | Check services | `kubectl get all` | View all resources |
 | Check logs | `kubectl logs deployment/<name>` | View pod logs |
-| PVC definition | `queue-service.yaml` / `web-server.yaml` | Persistent volume claims |
+| PVC definition | `queue-service.yaml` / `web-server.yaml` / `consumer.yaml` | Persistent volume claims |
 
 ---
 
