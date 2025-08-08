@@ -175,3 +175,13 @@ This project strengthened my skills in:
 
 ### End-to-End Flow Confirmation
 ![End-to-End Test Result](https://github.com/sivanmarom/signalPet/assets/97241683/16f82769-b326-4961-901a-173505dce070)
+
+---
+## 💬 Contact
+
+For suggestions, improvements, or collaboration:
+- 📧 [Sivmarom@gmail.com](mailto:Sivmarom@gmail.com)
+- 🔗 [LinkedIn](https://www.linkedin.com/in/sivan-marom/)
+- 💻 [GitHub](https://github.com/YOUR_USERNAME)
+
+---
